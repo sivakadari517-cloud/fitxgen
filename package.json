@@ -17,6 +17,8 @@
     "test:e2e:mobile": "playwright test --project='Mobile Chrome' --project='Mobile Safari'",
     "test:all": "npm run test:ci && npm run test:e2e",
     "test:performance": "playwright test --grep='Performance'",
+    "build:analyze": "ANALYZE=true npm run build",
+    "postbuild": "next-sitemap",
     "deploy": "chmod +x deploy.sh && ./deploy.sh",
     "preview": "vercel --no-prod",
     "prod": "vercel --prod"

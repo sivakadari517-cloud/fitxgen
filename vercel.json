@@ -1,28 +1,14 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
-  "installCommand": "npm install",
   "framework": "nextjs",
   "regions": ["bom1"],
+  "buildCommand": "npm run build",
+  "installCommand": "npm ci",
   "functions": {
-    "pages/api/**/*.js": {
-      "runtime": "nodejs18.x"
+    "app/api/**/*.ts": {
+      "runtime": "nodejs18.x",
+      "maxDuration": 30
     }
-  },
-  "env": {
-    "NEXTAUTH_SECRET": "@nextauth_secret",
-    "NEXTAUTH_URL": "@nextauth_url",
-    "MONGODB_URI": "@mongodb_uri",
-    "CLAUDE_API_KEY": "@claude_api_key",
-    "RAZORPAY_KEY_ID": "@razorpay_key_id",
-    "RAZORPAY_KEY_SECRET": "@razorpay_key_secret",
-    "SMTP_HOST": "@smtp_host",
-    "SMTP_PORT": "@smtp_port",
-    "SMTP_USER": "@smtp_user",
-    "SMTP_PASSWORD": "@smtp_password",
-    "NEXT_PUBLIC_BASE_URL": "@next_public_base_url",
-    "NEXT_PUBLIC_RAZORPAY_KEY_ID": "@next_public_razorpay_key_id"
   },
   "build": {
     "env": {
@@ -33,6 +19,10 @@
     {
       "source": "/(.*)",
       "headers": [
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains; preload"
+        },
         {
           "key": "X-Frame-Options",
           "value": "DENY"
@@ -48,6 +38,10 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
         }
       ]
     },
@@ -56,7 +50,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://fitxgen.vercel.app"
+          "value": "*"
         },
         {
           "key": "Access-Control-Allow-Methods",
@@ -65,8 +59,36 @@
         {
           "key": "Access-Control-Allow-Headers",
           "value": "Content-Type, Authorization"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "s-maxage=1, stale-while-revalidate=59"
         }
       ]
+    },
+    {
+      "source": "/manifest.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/icons/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/analytics/cleanup",
+      "schedule": "0 2 * * *"
     }
   ],
   "redirects": [
@@ -84,6 +106,16 @@
       "source": "/signup",
       "destination": "/auth/signup",
       "permanent": true
+    },
+    {
+      "source": "/login",
+      "destination": "/auth/signin",
+      "permanent": true
+    },
+    {
+      "source": "/register",
+      "destination": "/auth/signup",
+      "permanent": true
     }
   ],
   "rewrites": [
@@ -94,6 +126,10 @@
     {
       "source": "/robots.txt",
       "destination": "/api/robots"
+    },
+    {
+      "source": "/health",
+      "destination": "/api/health"
     }
   ]
 }

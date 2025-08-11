@@ -3,19 +3,11 @@ const nextConfig = {
   // Enable experimental features for better performance
   experimental: {
     optimizePackageImports: ['framer-motion', 'lucide-react'],
-    webVitalsAttribution: ['CLS', 'LCP'],
-    instrumentationHook: process.env.NODE_ENV === 'production'
+    webVitalsAttribution: ['CLS', 'LCP']
   },
 
   // Image optimization
   images: {
-    domains: ['localhost'],
-    formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     remotePatterns: [
       {
         protocol: 'https',
@@ -24,8 +16,18 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'images.unsplash.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com'
       }
-    ]
+    ],
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384]
   },
 
   // Compression and optimization
@@ -33,6 +35,9 @@ const nextConfig = {
   
   // Performance monitoring
   productionBrowserSourceMaps: false,
+  
+  // Output configuration for Vercel
+  output: 'standalone',
   
   // Security headers
   headers: async () => {
@@ -250,37 +255,6 @@ const nextConfig = {
 
   // Transpile modules for better tree shaking
   transpilePackages: ['@headlessui/react', 'framer-motion'],
-
-  // Runtime configuration
-  serverRuntimeConfig: {
-    // Server-side runtime config
-  },
-  publicRuntimeConfig: {
-    // Client-side runtime config
-    buildTime: new Date().toISOString()
-  },
-
-  // PWA optimizations (if using next-pwa)
-  ...(process.env.NODE_ENV === 'production' ? {
-    pwa: {
-      dest: 'public',
-      register: true,
-      skipWaiting: true,
-      runtimeCaching: [
-        {
-          urlPattern: /^https?.*/,
-          handler: 'NetworkFirst',
-          options: {
-            cacheName: 'offlineCache',
-            expiration: {
-              maxEntries: 200,
-              maxAgeSeconds: 24 * 60 * 60 // 24 hours
-            }
-          }
-        }
-      ]
-    }
-  } : {}),
 
   // Logging
   logging: {
