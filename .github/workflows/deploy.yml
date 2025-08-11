@@ -1,0 +1,145 @@
+name: Deploy FitXGen to Vercel
+
+on:
+  push:
+    branches: [ main, production ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run type check
+      run: npm run type-check
+      
+    - name: Run linting
+      run: npm run lint
+      
+    - name: Run tests (if available)
+      run: npm run test --if-present
+      
+    - name: Build application
+      run: npm run build
+      env:
+        NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+        NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+        RAZORPAY_KEY_ID: ${{ secrets.RAZORPAY_KEY_ID }}
+        RAZORPAY_KEY_SECRET: ${{ secrets.RAZORPAY_KEY_SECRET }}
+        NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+        NEXT_PUBLIC_RAZORPAY_KEY_ID: ${{ secrets.NEXT_PUBLIC_RAZORPAY_KEY_ID }}
+
+  deploy-preview:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install Vercel CLI
+      run: npm install --global vercel@latest
+      
+    - name: Pull Vercel Environment Information
+      run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+      
+    - name: Build Project Artifacts
+      run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+      
+    - name: Deploy Project Artifacts to Vercel
+      run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} > deployment-url.txt
+      
+    - name: Comment PR with preview URL
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const deploymentUrl = fs.readFileSync('deployment-url.txt', 'utf8').trim();
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `🚀 Preview deployment ready!\n\n**Preview URL:** ${deploymentUrl}\n\nChanges will be automatically deployed when this PR is merged.`
+          });
+
+  deploy-production:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install Vercel CLI
+      run: npm install --global vercel@latest
+      
+    - name: Pull Vercel Environment Information
+      run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      
+    - name: Build Project Artifacts
+      run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      
+    - name: Deploy Project Artifacts to Vercel
+      run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+      
+    - name: Post-deployment health check
+      run: |
+        sleep 30
+        curl -f ${{ secrets.NEXT_PUBLIC_BASE_URL }}/api/health || exit 1
+        
+  lighthouse-audit:
+    needs: deploy-production
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Wait for deployment
+      run: sleep 60
+      
+    - name: Run Lighthouse audit
+      uses: treosh/lighthouse-ci-action@v9
+      with:
+        urls: |
+          ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+          ${{ secrets.NEXT_PUBLIC_BASE_URL }}/auth/signin
+          ${{ secrets.NEXT_PUBLIC_BASE_URL }}/dashboard
+        configPath: './.lighthouserc.json'
+        uploadArtifacts: true
+        temporaryPublicStorage: true

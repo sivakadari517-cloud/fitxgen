@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="36" failures="0" errors="0" time="1.02">
+  <testsuite name="Body Fat Calculator" errors="0" failures="0" skipped="0" timestamp="2025-08-11T06:12:59" time="0.335" tests="36">
+    <testcase classname="Body Fat Calculator calculateBodyFat calculates accurate body fat for male using Navy method" name="Body Fat Calculator calculateBodyFat calculates accurate body fat for male using Navy method" time="0.003">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateBodyFat calculates accurate body fat for female using Navy method" name="Body Fat Calculator calculateBodyFat calculates accurate body fat for female using Navy method" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateBodyFat throws error for female without hip measurement" name="Body Fat Calculator calculateBodyFat throws error for female without hip measurement" time="0.013">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateBodyFat bounds body fat percentage between 3 and 50" name="Body Fat Calculator calculateBodyFat bounds body fat percentage between 3 and 50" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateBodyFat calculates BMI correctly" name="Body Fat Calculator calculateBodyFat calculates BMI correctly" time="0.001">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateBodyFat provides appropriate categories for different body fat levels" name="Body Fat Calculator calculateBodyFat provides appropriate categories for different body fat levels" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateBodyFat provides health status assessment" name="Body Fat Calculator calculateBodyFat provides health status assessment" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateBodyFat provides personalized recommendations" name="Body Fat Calculator calculateBodyFat provides personalized recommendations" time="0.001">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateBodyFat rounds results to one decimal place" name="Body Fat Calculator calculateBodyFat rounds results to one decimal place" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator validateMeasurements returns empty array for valid measurements" name="Body Fat Calculator validateMeasurements returns empty array for valid measurements" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator validateMeasurements validates age range" name="Body Fat Calculator validateMeasurements validates age range" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator validateMeasurements validates height range" name="Body Fat Calculator validateMeasurements validates height range" time="0.001">
+    </testcase>
+    <testcase classname="Body Fat Calculator validateMeasurements validates weight range" name="Body Fat Calculator validateMeasurements validates weight range" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator validateMeasurements validates waist measurement range" name="Body Fat Calculator validateMeasurements validates waist measurement range" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator validateMeasurements validates neck measurement range" name="Body Fat Calculator validateMeasurements validates neck measurement range" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator validateMeasurements requires hip measurement for females" name="Body Fat Calculator validateMeasurements requires hip measurement for females" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator validateMeasurements validates hip measurement range for females" name="Body Fat Calculator validateMeasurements validates hip measurement range for females" time="0.001">
+    </testcase>
+    <testcase classname="Body Fat Calculator validateMeasurements validates logical relationship between waist and neck" name="Body Fat Calculator validateMeasurements validates logical relationship between waist and neck" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator validateMeasurements handles missing required fields" name="Body Fat Calculator validateMeasurements handles missing required fields" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateBMR calculates BMR for males correctly" name="Body Fat Calculator calculateBMR calculates BMR for males correctly" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateBMR calculates BMR for females correctly" name="Body Fat Calculator calculateBMR calculates BMR for females correctly" time="0.001">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateBMR returns higher BMR for males than females with same stats" name="Body Fat Calculator calculateBMR returns higher BMR for males than females with same stats" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateTDEE calculates TDEE for sedentary activity level" name="Body Fat Calculator calculateTDEE calculates TDEE for sedentary activity level" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateTDEE calculates TDEE for light activity level" name="Body Fat Calculator calculateTDEE calculates TDEE for light activity level" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateTDEE calculates TDEE for moderate activity level" name="Body Fat Calculator calculateTDEE calculates TDEE for moderate activity level" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateTDEE calculates TDEE for active activity level" name="Body Fat Calculator calculateTDEE calculates TDEE for active activity level" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateTDEE calculates TDEE for very active activity level" name="Body Fat Calculator calculateTDEE calculates TDEE for very active activity level" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator calculateTDEE defaults to moderate for invalid activity level" name="Body Fat Calculator calculateTDEE defaults to moderate for invalid activity level" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator Integration Tests provides consistent results for same input" name="Body Fat Calculator Integration Tests provides consistent results for same input" time="0.001">
+    </testcase>
+    <testcase classname="Body Fat Calculator Integration Tests provides different results for different genders with same measurements" name="Body Fat Calculator Integration Tests provides different results for different genders with same measurements" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator Integration Tests validates comprehensive data flow" name="Body Fat Calculator Integration Tests validates comprehensive data flow" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator Edge Cases handles minimum valid measurements" name="Body Fat Calculator Edge Cases handles minimum valid measurements" time="0.001">
+    </testcase>
+    <testcase classname="Body Fat Calculator Edge Cases handles maximum valid measurements" name="Body Fat Calculator Edge Cases handles maximum valid measurements" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator Edge Cases provides age-appropriate recommendations" name="Body Fat Calculator Edge Cases provides age-appropriate recommendations" time="0">
+    </testcase>
+    <testcase classname="Body Fat Calculator Performance Tests calculates results efficiently" name="Body Fat Calculator Performance Tests calculates results efficiently" time="0.001">
+    </testcase>
+    <testcase classname="Body Fat Calculator Performance Tests validation performs efficiently on large datasets" name="Body Fat Calculator Performance Tests validation performs efficiently on large datasets" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>
